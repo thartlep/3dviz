@@ -3,7 +3,26 @@ from astropy.io import fits as pyfits
 from tvtk.api import tvtk
 import sys
 
-directory = sys.argv[1]
+directory = './'
+extension = 0
+thinning_factor = 8.0
+if len(sys.argv) > 1:
+  # directory name where data is to be found
+  directory = sys.argv[1]
+if len(sys.argv) > 2:
+  # extension number of data in the FITS files
+  extension = int(sys.argv[2])
+
+if len(sys.argv) > 3:
+  # factor by how much original data should be binned down for visualization
+  thinning_factor = float(sys.argv[3])
+
+print '---3dviz---'
+print 'Input directory:  ',directory
+print 'Extension number: ',extension
+print 'Thinning factor:  ',thinning_factor
+print ' ' 
+
 B_r_filename     = directory+'/output.sphere__B0r____.fits'
 B_theta_filename = directory+'/output.sphere__B0t____.fits'
 B_phi_filename   = directory+'/output.sphere__B0p____.fits'
@@ -50,15 +69,15 @@ del line
 #### Load field data ########################################################
 print 'Loading field data ... '
 fitsfile = pyfits.open(B_r_filename)
-B_r = fitsfile[0].data
+B_r = fitsfile[extension].data
 fitsfile.close()
 print '   B_r done (size: '+str(B_r.size)+')'
 fitsfile = pyfits.open(B_theta_filename)
-B_theta = fitsfile[0].data
+B_theta = fitsfile[extension].data
 fitsfile.close()
 print '   B_theta (size: '+str(B_theta.size)+')'
 fitsfile = pyfits.open(B_phi_filename)
-B_phi = fitsfile[0].data
+B_phi = fitsfile[extension].data
 fitsfile.close()
 print '   B_phi done (size: '+str(B_phi.size)+')'
 del fitsfile
@@ -66,7 +85,6 @@ del fitsfile
 
 #### Convert to Cartesian coordinates #######################################
 
-thinning_factor = 8.0
 N_r = int(np.floor(N_r / thinning_factor))
 N_theta = int(np.floor(N_theta / thinning_factor))
 N_phi = int(np.floor(N_phi / thinning_factor))
