@@ -11,7 +11,7 @@ B_phi_filename   = directory+'/output.sphere__B0p____.fits'
 
 #### Load theta-grid from file ##############################################
 print 'Loading theta-grid ... '
-fitsfile = pyfits.open('output.theta_grid.fits')
+fitsfile = pyfits.open(directory+'output.theta_grid.fits')
 image = fitsfile[0].data
 fitsfile.close()
 theta_values = np.array(list(image[:,0]))
@@ -32,7 +32,7 @@ cosphis = np.cos(phi_values)
 
 #### Set r-grid #############################################################
 print 'Loading r-grid ... '
-f = open('output.model_zgrid_ext','r')
+f = open(directory+'output.model_zgrid_ext','r')
 lines = f.readlines()
 f.close()
 N_r = len(lines)
