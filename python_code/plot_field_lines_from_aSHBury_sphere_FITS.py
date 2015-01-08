@@ -9,6 +9,8 @@ thinning_factor = 8.0
 if len(sys.argv) > 1:
   # directory name where data is to be found
   directory = sys.argv[1]
+  if directory[len(directory)-1] != '/':
+    directory = directory + '/'
 if len(sys.argv) > 2:
   # extension number of data in the FITS files
   extension = int(sys.argv[2])
