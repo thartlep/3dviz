@@ -14,15 +14,20 @@ if len(sys.argv) > 1:
 if len(sys.argv) > 2:
   # extension number of data in the FITS files
   extension = int(sys.argv[2])
-
 if len(sys.argv) > 3:
   # factor by how much original data should be binned down for visualization
   thinning_factor = float(sys.argv[3])
+if len(sys.argv) > 4:
+  # separate thinning factor for r direction
+  thinning_factor_for_r = float(sys.argv[4])
+else:
+  thinning_factor_for_r = thinning_factor
 
 print '---3dviz---'
-print 'Input directory:  ',directory
-print 'Extension number: ',extension
-print 'Thinning factor:  ',thinning_factor
+print 'Input directory:    ',directory
+print 'Extension number:   ',extension
+print 'Thinning factor:    ',thinning_factor
+print 'Thinning factor(r): ',thinning_factor_for_r
 print ' ' 
 
 B_r_filename     = directory+'/output.sphere__B0r____.fits'
@@ -87,7 +92,7 @@ del fitsfile
 
 #### Convert to Cartesian coordinates #######################################
 
-N_r = int(np.floor(N_r / thinning_factor))
+N_r = int(np.floor(N_r / thinning_factor_for_r))
 N_theta = int(np.floor(N_theta / thinning_factor))
 N_phi = int(np.floor(N_phi / thinning_factor))
 
@@ -116,7 +121,7 @@ for phi_i in sum([range(0,N_phi),[0]],[]):
       theta_index = int(thinning_factor*theta_i)
       thetaval = theta_values[theta_index]
       for r_i in range(0,N_r):
-         r_index = int(thinning_factor*r_i)
+         r_index = int(thinning_factor_for_r*r_i)
          rval = r_values[r_index]
 
          # Magentic field from file
